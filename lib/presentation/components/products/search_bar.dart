@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 
-class SearchBar extends StatelessWidget {
+class SearchBar extends StatefulWidget {
   Function onTap;
 
   SearchBar({super.key, required this.onTap});
+
+  @override
+  State<SearchBar> createState() => _SearchBarState();
+}
+
+class _SearchBarState extends State<SearchBar> {
+  final _myController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -11,15 +18,19 @@ class SearchBar extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         const Flexible(
-          flex: 2,
-          child: SearchBarTextField(),
-        ),
+            flex: 2,
+            child: TextField(
+              decoration: InputDecoration(
+                suffixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(),
+              ),
+            )),
         const SizedBox(
           width: 16,
         ),
         ElevatedButton(
           onPressed: () {
-            onTap();
+            widget.onTap();
           },
           child: const Text("+ Produto"),
         )
@@ -28,38 +39,25 @@ class SearchBar extends StatelessWidget {
   }
 }
 
-class SearchBarTextField extends StatefulWidget {
-  const SearchBarTextField({super.key});
+// class SearchBarTextField extends StatefulWidget {
+//   const SearchBarTextField({super.key});
 
-  @override
-  State<SearchBarTextField> createState() => _SearchBarTextFieldState();
-}
+//   @override
+//   State<SearchBarTextField> createState() => _SearchBarTextFieldState();
+// }
 
-class _SearchBarTextFieldState extends State<SearchBarTextField> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.blueAccent,
-        ),
-        borderRadius: BorderRadius.circular(4),
-      ),
-      padding: const EdgeInsets.all(8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: const [
-          Text("aaaaa"),
-          SizedBox(
-            width: 8,
-          ),
-          SizedBox(
-            child: Icon(
-              Icons.search,
-            ),
-          )
-        ],
-      ),
-    );
-  }
-}
+// class _SearchBarTextFieldState extends State<SearchBarTextField> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       decoration: BoxDecoration(
+//         border: Border.all(
+//           color: Colors.blueAccent,
+//         ),
+//         borderRadius: BorderRadius.circular(4),
+//       ),
+//       padding: const EdgeInsets.all(8),
+//       child: 
+//     );
+//   }
+// }
