@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 class ProductsListItemViewModel {
   String uuid;
-  String sku;
   String name;
   String category;
   int quantity;
@@ -11,7 +10,6 @@ class ProductsListItemViewModel {
 
   ProductsListItemViewModel(
       {required this.uuid,
-      required this.sku,
       required this.name,
       required this.category,
       required this.quantity,

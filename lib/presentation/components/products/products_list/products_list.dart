@@ -48,8 +48,8 @@ class _ProductsListState extends State<ProductsList> {
     List<DataRow> rows = data
         .map((e) => ProductsListItem(
               viewModel: e,
-              onDelete: () => onToggle(e.sku),
-              onToggle: () => onDelete(e.sku),
+              onDelete: () => onToggle(e.uuid),
+              onToggle: () => onDelete(e.uuid),
             ).makeDataRowWith())
         .toList();
 

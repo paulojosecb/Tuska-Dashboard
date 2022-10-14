@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:tuska_dashboard/presentation/pages/catalog_page.dart';
-import 'package:tuska_dashboard/presentation/pages/create_product_page.dart';
+import 'package:tuska_dashboard/presentation/pages/create_product/create_product_page.dart';
 import 'package:tuska_dashboard/presentation/pages/products_page.dart';
 import 'package:tuska_dashboard/presentation/pages/sell_page.dart';
 import 'package:tuska_dashboard/presentation/pages/settings_page.dart';
