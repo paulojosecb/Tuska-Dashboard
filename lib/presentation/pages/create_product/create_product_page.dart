@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tuska_dashboard/presentation/pages/create_product/create_product_details_card.dart';
-import 'package:tuska_dashboard/presentation/pages/create_product/create_product_page_header.dart';
+import 'package:tuska_dashboard/presentation/pages/create_product/components/create_product_details_card.dart/create_product_details_card.dart';
+import 'package:tuska_dashboard/presentation/pages/create_product/components/create_product_page_header.dart';
 
 class CreateProductPage extends StatefulWidget {
   const CreateProductPage({super.key, required this.navigatorKey});
