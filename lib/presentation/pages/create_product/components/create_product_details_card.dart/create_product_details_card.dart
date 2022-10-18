@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tuska_dashboard/domain/product_categoy.dart';
 import 'package:tuska_dashboard/presentation/components/currency_input_formatter.dart';
 import 'package:tuska_dashboard/presentation/components/custom_dropdown.dart';
-import 'package:tuska_dashboard/presentation/pages/create_product/create_product_storage_card.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:tuska_dashboard/presentation/pages/create_product/components/create_product_details_card.dart/create_pruduct_details_card_presenter.dart';
+import 'package:tuska_dashboard/presentation/pages/create_product/components/create_product_storage_card.dart';
+import 'package:tuska_dashboard/presentation/pages/create_product/components/create_product_variant_card.dart';
+import 'package:tuska_dashboard/domain/product_variant.dart';
 
 class CreateProductDetailsCard extends StatefulWidget {
   const CreateProductDetailsCard({super.key});
@@ -14,24 +17,59 @@ class CreateProductDetailsCard extends StatefulWidget {
 }
 
 class _CreateProductDetailsCardState extends State<CreateProductDetailsCard> {
-  String dropdownValue = "";
-  List<String> list = [];
+  final presenter = DefaultCreateProductDetailsCardPresenter();
   String _imagePath = "";
 
+  List<ProductVariant> productVariants = [];
+  List<ProductCategory> categories = [];
+
   final _controller = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   static const double spacerHeight = 32;
 
-  final _formKey = GlobalKey<FormState>();
+  @override
+  void initState() {
+    getCategories();
+    super.initState();
+  }
 
-  // void _validateForm() {}
+  void getCategories() {
+    presenter.getCategories().then((value) {
+      setState(() {
+        categories = value;
+      });
+    });
+  }
 
   void getImage() async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    String path = await presenter.getImageForProduct();
+    setState(() {
+      _imagePath = path;
+    });
+  }
+
+  void createVariant() async {
+    List<ProductVariant> productsVariants = await presenter.createVariant();
+    setState(() {
+      productVariants = productsVariants;
+    });
+  }
+
+  void deleteVariant(int index) async {
+    List<ProductVariant> productsVariants =
+        await presenter.deleteVariant(index);
 
     setState(() {
-      _imagePath = image!.path;
+      productVariants = productsVariants;
+    });
+  }
+
+  void getImageFor(int index) async {
+    List<ProductVariant> productVariants =
+        await presenter.getImageForVariantOn(index);
+    setState(() {
+      productVariants = productVariants;
     });
   }
 
@@ -100,12 +138,23 @@ class _CreateProductDetailsCardState extends State<CreateProductDetailsCard> {
                 const SizedBox(
                   height: spacerHeight,
                 ),
-                const CreateProductVariationCard(),
+                CreateProductVariationCard(
+                  productVariants: productVariants,
+                  onCreate: () {
+                    createVariant();
+                  },
+                  onDelete: (index) {
+                    deleteVariant(index);
+                  },
+                  onGetImage: (index) {
+                    getImageFor(index);
+                  },
+                ),
                 const SizedBox(
                   height: spacerHeight,
                 ),
                 CustomDropdown(
-                  itens: const [],
+                  itens: categories.map((e) => e.name).toList(),
                   onChanged: () {},
                   onSaved: () {},
                   hint: "Categoria(s)",
@@ -145,148 +194,6 @@ class _CreateProductDetailsCardState extends State<CreateProductDetailsCard> {
             ),
           )
         ]),
-      ),
-    );
-  }
-}
-
-class ProductVariant {
-  String name;
-  Image? image;
-
-  ProductVariant({required this.name});
-}
-
-class CreateProductVariationCard extends StatefulWidget {
-  const CreateProductVariationCard({super.key});
-
-  @override
-  State<CreateProductVariationCard> createState() =>
-      _CreateProductVariationCardState();
-}
-
-class _CreateProductVariationCardState
-    extends State<CreateProductVariationCard> {
-  bool isVariantEnabled = false;
-  List<ProductVariant> productVariants = [];
-
-  void createVariant() {
-    ProductVariant variant = ProductVariant(name: "");
-    setState(() {
-      productVariants.add(variant);
-    });
-  }
-
-  void deleteVariant(int index) {
-    setState(() {
-      productVariants.removeAt(index);
-    });
-  }
-
-  void getImageFor(int index) async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-    print(image);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          children: [
-            const Text("Desejar incluir variação de produto?"),
-            Switch(
-              value: isVariantEnabled,
-              onChanged: ((value) {
-                setState(() {
-                  isVariantEnabled = value;
-                });
-              }),
-            ),
-          ],
-        ),
-        Visibility(
-            visible: isVariantEnabled,
-            child: Column(
-              children: [
-                ElevatedButton(
-                  onPressed: () => createVariant(),
-                  child: const Text("Adicionar nova variante"),
-                ),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  scrollDirection: Axis.vertical,
-                  itemCount: productVariants.length,
-                  itemBuilder: (context, index) {
-                    return CreateProductVariantCardRow(
-                      image: productVariants[0].image,
-                      name: productVariants[0].name,
-                      onGetImage: () {
-                        getImageFor(index);
-                      },
-                      onDelete: () {
-                        deleteVariant(index);
-                      },
-                    );
-                  },
-                )
-              ],
-            )),
-      ],
-    );
-  }
-}
-
-class CreateProductVariantCardRow extends StatelessWidget {
-  const CreateProductVariantCardRow(
-      {super.key,
-      this.image,
-      required this.name,
-      required this.onGetImage,
-      required this.onDelete});
-
-  final Image? image;
-  final String name;
-  final void Function() onGetImage;
-  final void Function() onDelete;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 64,
-      child: Row(
-        children: [
-          SizedBox(
-            width: 90,
-            height: 160,
-            child: InkWell(
-              onTap: () {
-                onGetImage();
-              },
-            ),
-          ),
-          const SizedBox(
-            width: 16,
-          ),
-          const Expanded(
-            child: TextField(
-              decoration: InputDecoration(
-                labelText: "Nome da variante",
-                border: OutlineInputBorder(),
-              ),
-            ),
-          ),
-          const SizedBox(
-            width: 16,
-          ),
-          IconButton(
-              onPressed: () {
-                onDelete();
-              },
-              icon: const Icon(Icons.delete))
-        ],
       ),
     );
   }
