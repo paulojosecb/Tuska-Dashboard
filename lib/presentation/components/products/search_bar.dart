@@ -10,8 +10,6 @@ class SearchBar extends StatefulWidget {
 }
 
 class _SearchBarState extends State<SearchBar> {
-  final _myController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Row(

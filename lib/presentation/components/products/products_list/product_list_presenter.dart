@@ -12,7 +12,6 @@ class DefaultProductListPresenter implements ProductListPresenter {
     return [
       ProductsListItemViewModel(
           uuid: "1",
-          sku: "SKU1",
           name: "Nintendo Swictch",
           category: "Video Game",
           quantity: 8,
@@ -20,7 +19,6 @@ class DefaultProductListPresenter implements ProductListPresenter {
           isSelected: true),
       ProductsListItemViewModel(
           uuid: "2",
-          sku: "SKU2",
           name: "Playstation 5",
           category: "Video Game",
           quantity: 3,
