@@ -36,26 +36,3 @@ class _SearchBarState extends State<SearchBar> {
     );
   }
 }
-
-// class SearchBarTextField extends StatefulWidget {
-//   const SearchBarTextField({super.key});
-
-//   @override
-//   State<SearchBarTextField> createState() => _SearchBarTextFieldState();
-// }
-
-// class _SearchBarTextFieldState extends State<SearchBarTextField> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       decoration: BoxDecoration(
-//         border: Border.all(
-//           color: Colors.blueAccent,
-//         ),
-//         borderRadius: BorderRadius.circular(4),
-//       ),
-//       padding: const EdgeInsets.all(8),
-//       child: 
-//     );
-//   }
-// }
