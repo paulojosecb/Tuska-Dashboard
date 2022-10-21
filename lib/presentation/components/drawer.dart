@@ -33,12 +33,12 @@ class _NavDrawerState extends State<NavDrawer>
       child: ListView(
         padding: const EdgeInsets.all(8),
         children: [
-          ListTile(
-            title: const Text("Vender"),
-            onTap: () {
-              _navigateTo("/sell");
-            },
-          ),
+          // ListTile(
+          //   title: const Text("Vender"),
+          //   onTap: () {
+          //     _navigateTo("/sell");
+          //   },
+          // ),
           ListTile(
             title: const Text("Produtos"),
             onTap: () {
@@ -51,12 +51,12 @@ class _NavDrawerState extends State<NavDrawer>
               _navigateTo("/catalog");
             },
           ),
-          ListTile(
-            title: const Text("Histórico"),
-            onTap: () {
-              _navigateTo("/historic");
-            },
-          ),
+          // ListTile(
+          //   title: const Text("Histórico"),
+          //   onTap: () {
+          //     _navigateTo("/historic");
+          //   },
+          // ),
           ListTile(
             title: const Text("Configuraçõesß"),
             onTap: () {
