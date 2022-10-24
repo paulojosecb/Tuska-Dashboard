@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:tuska_dashboard/domain/product_categoy.dart';
 import 'package:tuska_dashboard/presentation/components/currency_input_formatter.dart';
 import 'package:tuska_dashboard/presentation/components/custom_dropdown.dart';
+import 'package:tuska_dashboard/presentation/components/image_selector/image_selector.dart';
 import 'package:tuska_dashboard/presentation/pages/create_product/components/create_product_details_card.dart/create_pruduct_details_card_presenter.dart';
 import 'package:tuska_dashboard/presentation/pages/create_product/components/create_product_storage_card.dart';
 import 'package:tuska_dashboard/presentation/pages/create_product/components/create_product_variant_card.dart';
@@ -18,7 +19,6 @@ class CreateProductDetailsCard extends StatefulWidget {
 
 class _CreateProductDetailsCardState extends State<CreateProductDetailsCard> {
   final presenter = DefaultCreateProductDetailsCardPresenter();
-  String _imagePath = "";
 
   List<ProductVariant> productVariants = [];
   List<ProductCategory> categories = [];
@@ -39,13 +39,6 @@ class _CreateProductDetailsCardState extends State<CreateProductDetailsCard> {
       setState(() {
         categories = value;
       });
-    });
-  }
-
-  void getImage() async {
-    String path = await presenter.getImageForProduct();
-    setState(() {
-      _imagePath = path;
     });
   }
 
@@ -79,30 +72,9 @@ class _CreateProductDetailsCardState extends State<CreateProductDetailsCard> {
       child: Padding(
         padding: const EdgeInsets.all(64.0),
         child: Column(children: [
-          SizedBox(
-            height: 200,
-            child: Center(
-              child: SizedBox(
-                width: 100,
-                height: 150,
-                child: InkWell(
-                    onTap: () => getImage(),
-                    child: Row(
-                      children: [
-                        Visibility(
-                          visible: _imagePath != "",
-                          child: Image.network(_imagePath),
-                        ),
-                        Visibility(
-                          visible: _imagePath == "",
-                          child: const DecoratedBox(
-                            decoration: BoxDecoration(color: Colors.grey),
-                          ),
-                        )
-                      ],
-                    )),
-              ),
-            ),
+          const ImageSelector(),
+          const SizedBox(
+            height: spacerHeight,
           ),
           Form(
             key: _formKey,
@@ -145,9 +117,6 @@ class _CreateProductDetailsCardState extends State<CreateProductDetailsCard> {
                   },
                   onDelete: (index) {
                     deleteVariant(index);
-                  },
-                  onGetImage: (index) {
-                    getImageFor(index);
                   },
                 ),
                 const SizedBox(

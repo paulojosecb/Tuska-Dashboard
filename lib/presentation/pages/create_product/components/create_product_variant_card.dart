@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:tuska_dashboard/domain/product_variant.dart';
+import 'package:tuska_dashboard/presentation/components/image_selector/image_selector.dart';
 
 class CreateProductVariationCard extends StatefulWidget {
   CreateProductVariationCard(
       {super.key,
       required this.productVariants,
-      required this.onGetImage,
       required this.onDelete,
       required this.onCreate});
 
   List<ProductVariant> productVariants = [];
-  final void Function(int) onGetImage;
   final void Function(int) onDelete;
   final void Function() onCreate;
 
@@ -58,9 +57,6 @@ class _CreateProductVariationCardState
               return CreateProductVariantCardRow(
                 image: widget.productVariants[0].image,
                 name: widget.productVariants[0].name,
-                onGetImage: () {
-                  widget.onGetImage(index);
-                },
                 onDelete: () {
                   widget.onDelete(index);
                 },
@@ -75,15 +71,10 @@ class _CreateProductVariationCardState
 
 class CreateProductVariantCardRow extends StatelessWidget {
   const CreateProductVariantCardRow(
-      {super.key,
-      this.image,
-      required this.name,
-      required this.onGetImage,
-      required this.onDelete});
+      {super.key, this.image, required this.name, required this.onDelete});
 
   final Image? image;
   final String name;
-  final void Function() onGetImage;
   final void Function() onDelete;
 
   @override
@@ -92,15 +83,7 @@ class CreateProductVariantCardRow extends StatelessWidget {
       height: 64,
       child: Row(
         children: [
-          SizedBox(
-            width: 90,
-            height: 160,
-            child: InkWell(
-              onTap: () {
-                onGetImage();
-              },
-            ),
-          ),
+          const ImageSelector(),
           const SizedBox(
             width: 16,
           ),
